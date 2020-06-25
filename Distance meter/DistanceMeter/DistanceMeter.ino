@@ -2,18 +2,17 @@
 
 #include <LiquidCrystal.h>
 
-#define ECHO 40
-#define TRG 41
+#define ECHO 12
+#define TRG 13
 
 #define CMB 11
-#define MTB 12
+#define MTB 10
 
-LiquidCrystal lcd(2,3,4,6,7,8,9);
+LiquidCrystal lcd(2,3,4,5,7,8,9);
 NewPing sonar = NewPing(TRG, ECHO, 4000);
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
 
   lcd.begin(16, 2);
   
@@ -30,12 +29,12 @@ void loop() {
   int distance = sonar.ping_cm();
 
   if(digitalRead(CMB) == LOW) {
-    escreve(distance, true);
+    writeLCD(distance, true);
     while(digitalRead(CMB) == LOW) {
       
     }
   }else if(digitalRead(MTB) == LOW) {
-    escreve(distance, false);
+    writeLCD(distance, false);
     while(digitalRead(MTB) == LOW) {
       
     }
@@ -61,7 +60,7 @@ String formatDistance(String distance) {
   return model;  
 }
 
-void escreve(int distance, bool cm) {
+void writeLCD(int distance, bool cm) {
   if(cm) {
     clearDistance();
     lcd.print(distance);
